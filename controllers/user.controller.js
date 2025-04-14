@@ -67,6 +67,18 @@ exports.getUserProfile = async (req, res) => {
     }
 };
 
+exports.getName = async (req, res)=>{
+    try{
+        const userId = req.user.userId;
+        const Name = await User.findById(userId).select("+name");
+        if (!Name) return res.status(404).json({message:"User's name not found!!"});
+
+        res.status(200).json(Name);
+    } catch(error){
+        res.status(500).json({message:"Server Error in getName", error});
+    }
+};
+
 // 📌 **Update Password**
 exports.updatePassword = async (req, res) => {
     try {

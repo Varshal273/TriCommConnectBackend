@@ -36,7 +36,10 @@ router.put("/update-settings", userController.updateUserSettings);
 // ✅ Delete user account
 router.delete("/delete", userController.deleteUser);
 
-
+// get all the chats in which user as participated in.
 router.get('/getUserChats/:userId', userController.getUserChats);
+
+// get the name of other user to display as chat name
+router.get("/getNames/:userId", userController.getName);
 
 module.exports = router;
