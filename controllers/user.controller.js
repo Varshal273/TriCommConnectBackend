@@ -144,7 +144,7 @@ exports.deleteUser = async (req, res) => {
 // 📌 **Get List of All Users (Excluding Passwords)**
 exports.getAllUsers = async (req, res) => {
     try {
-        const users = await User.find().select("-_id + username + name + email + phoneNumber"); // Exclude password from response
+        const users = await User.find().select("username + name + email + phoneNumber"); // Exclude password from response
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ message: "Server error", error });

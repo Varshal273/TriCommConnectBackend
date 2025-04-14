@@ -9,31 +9,58 @@ exports.createChat = async (req, res) => {
         let { userIds, groupName } = req.body;
 
         if (!userIds || userIds.length < 2) {
-            return res.status(400).json({ message: "At least two users required." });
+            return res.status(400).json({ message: "At least two users are required." });
         }
 
-        // Convert to ObjectIds
+        // Convert userIds to ObjectIds
         userIds = userIds.map(id => new mongoose.Types.ObjectId(id));
 
-        // Check if chat already exists
-        const existingChat = await Chat.findOne({
-            group: { $size: userIds.length, $all: userIds }
-        });
-
-        if (existingChat) {
-            return res.status(200).json({ message: "Chat already exists", chat: existingChat });
+        // Validate that all user IDs exist
+        const users = await User.find({ _id: { $in: userIds } });
+        if (users.length !== userIds.length) {
+            return res.status(400).json({ message: "Some user IDs are invalid or not found." });
         }
 
-        // Create and save new chat
+        // For group chats: groupName must be provided and unique
+        if (userIds.length > 2) {
+            if (!groupName || groupName.trim() === "") {
+                return res.status(400).json({ message: "Group name is required for group chats." });
+            }
+
+            const nameExists = await Chat.findOne({ groupName });
+            if (nameExists) {
+                return res.status(400).json({ message: "Group name already exists. Please choose a different name." });
+            }
+        }
+
+        // For 2-person chats, check if one already exists
+        if (userIds.length === 2) {
+            const existingChat = await Chat.findOne({
+                group: { $size: 2, $all: userIds }
+            });
+
+            if (existingChat) {
+                return res.status(200).json({ message: "Chat already exists", chat: existingChat });
+            }
+
+            // If no group name, set it using the name of the second user
+            if (!groupName) {
+                const otherUserId = userIds[1]; // assume second user for naming
+                const otherUser = await User.findById(otherUserId);
+                groupName = otherUser?.name || "Personal Chat";
+            }
+        }
+
+        // Create new chat
         const newChat = new Chat({
             group: userIds,
             msg: [],
-            groupName: groupName || "Personal Chat",
+            groupName
         });
 
         await newChat.save();
 
-        // Add newChat._id to each user's joinedTo array
+        // Add chat to each user's joinedTo field
         await Promise.all(
             userIds.map(userId =>
                 User.findByIdAndUpdate(
@@ -44,13 +71,14 @@ exports.createChat = async (req, res) => {
             )
         );
 
-        res.status(201).json({ message: "Chat created", chat: newChat });
+        return res.status(201).json({ message: "Chat created", chat: newChat });
 
     } catch (error) {
         console.error("Error creating chat:", error);
-        res.status(500).json({ error: "Failed to create chat." });
+        return res.status(500).json({ error: "Failed to create chat." });
     }
 };
+
 
 
 // ✅ Get messages of a chat
