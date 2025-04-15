@@ -182,14 +182,47 @@ exports.getUserChats = async (req, res) => {
 
         const chats = await Chat.find({
             _id: { $in: user.joinedTo }
-        }).select('groupName');
+        }).select('groupName lastMessage');
 
-        const chatNames = chats.map(chat => chat.groupName);
+        const chatList = chats.map(chat => ({
+            chatId: chat._id,
+            groupName: chat.groupName,
+            lastMessage: chat.lastMessage || null,
+        }));
 
-        res.status(200).json({ chatNames });
+        res.status(200).json({ chatList });
 
     } catch (error) {
         console.error("Error getting user chats:", error);
         res.status(500).json({ error: "Failed to retrieve user chats." });
     }
 };
+
+
+// exports.getUserChats = async (req, res) => {
+//     try {
+//         const { userId } = req.params;
+
+//         if (!mongoose.Types.ObjectId.isValid(userId)) {
+//             return res.status(400).json({ message: "Invalid userId" });
+//         }
+
+//         const user = await User.findById(userId).select('joinedTo');
+
+//         if (!user) {
+//             return res.status(404).json({ message: "User not found" });
+//         }
+
+//         const chats = await Chat.find({
+//             _id: { $in: user.joinedTo }
+//         }).select('groupName');
+
+//         const chatNames = chats.map(chat => chat.groupName);
+
+//         res.status(200).json({ chatNames });
+
+//     } catch (error) {
+//         console.error("Error getting user chats:", error);
+//         res.status(500).json({ error: "Failed to retrieve user chats." });
+//     }
+// };
