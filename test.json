@@ -1,0 +1,15 @@
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2VlOGU5YTQ2ZDg0NzJhNTIxMzBkZmEiLCJpYXQiOjE3NDQ3ODQzMTgsImV4cCI6MTc0NTM4OTExOH0.7TcuvhQoUemGZXr9__fSOdLcX1JX475HMbzm1SAweT8",
+    "user":{
+        "_id":"67ee8e9a46d8472a52130dfa",
+        "devices":[],
+        "email":"hi@gmail.com",
+        "joinedTo":["67f9097b17280021ef800556","67f909b017280021ef80055c","67fe0837ce06e4a07d12f609","67fe0879ce06e4a07d12f61b"],
+        "name":"hello",
+        "phoneNumber":1111253844,
+        "settings":{
+            "notification":true,"
+            preferred_channel":"Wi-Fi"
+        },
+        "username":"hello"
+    }
+}

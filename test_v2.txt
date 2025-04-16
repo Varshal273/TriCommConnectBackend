@@ -1,0 +1,179 @@
+post http://localhost:5000/api/chats/create
+req:
+{
+  "group": ["67fb79eafbe038d9ab3a7ac2", "67e3fa5d227ee2a663cb1a73"],
+  "groupName": "Test Chat Group"
+}
+res:
+{
+    "message": "Chat created",
+    "chat": {
+        "group": [
+            "67fb79eafbe038d9ab3a7ac2",
+            "67e3fa5d227ee2a663cb1a73"
+        ],
+        "groupName": "Test Chat Group",
+        "lastMessage": {
+            "time": "2025-04-15T18:34:13.630Z"
+        },
+        "_id": "67fea6a573d60c572225c219",
+        "msg": [],
+        "createdAt": "2025-04-15T18:34:13.656Z",
+        "updatedAt": "2025-04-15T18:34:13.656Z",
+        "__v": 0
+    }
+}
+
+post http://localhost:5000/api/chats/67fea6a573d60c572225c219/message
+req:
+{
+  "senderId": "67fb79eafbe038d9ab3a7ac2",
+  "msgBody": "Hello from Postman"
+}
+res:
+{
+    "message": "Message sent",
+    "newMessage": {
+        "senderUserId": "67fb79eafbe038d9ab3a7ac2",
+        "msgBody": "Hello from Postman",
+        "time": "2025-04-15T18:37:28.689Z"
+    }
+}
+
+get http://localhost:5000/api/chats/67fea6a573d60c572225c219/messages
+res:
+{
+    "messages": [
+        {
+            "senderUserId": {
+                "_id": "67fb79eafbe038d9ab3a7ac2",
+                "username": "hello12"
+            },
+            "msgBody": "Hello from Postman",
+            "time": "2025-04-15T18:37:28.689Z",
+            "_id": "67fea768721de32575cc5b2e"
+        }
+    ]
+}
+
+get http://localhost:5000/api/chats/user/67e3fa5d227ee2a663cb1a73
+req:
+{
+    "chats": [
+        {
+            "lastMessage": {
+                "time": "2025-04-15T18:40:25.152Z"
+            },
+            "_id": "67fe07c7ce06e4a07d12f5fe",
+            "group": [
+                {
+                    "_id": "67e3fca4f659e9d28448e851",
+                    "username": "tgbyhnujm",
+                    "email": "ad@asd.zxc"
+                },
+                {
+                    "_id": "67e3fa5d227ee2a663cb1a73",
+                    "username": "auisydf",
+                    "email": "asd@asd.zxc"
+                }
+            ],
+            "groupName": "dfghjk"
+        },
+        {
+            "lastMessage": {
+                "time": "2025-04-15T18:40:25.153Z"
+            },
+            "_id": "67fe0837ce06e4a07d12f609",
+            "group": [
+                {
+                    "_id": "67ee8e9a46d8472a52130dfa",
+                    "username": "hello",
+                    "email": "hi@gmail.com"
+                },
+                {
+                    "_id": "67e3fa5d227ee2a663cb1a73",
+                    "username": "auisydf",
+                    "email": "asd@asd.zxc"
+                }
+            ],
+            "groupName": "dfghjk"
+        },
+        {
+            "lastMessage": {
+                "time": "2025-04-15T18:40:25.153Z"
+            },
+            "_id": "67fe0841ce06e4a07d12f610",
+            "group": [
+                {
+                    "_id": "67fb79eafbe038d9ab3a7ac2",
+                    "username": "hello12",
+                    "email": "hellohi@gmail.com"
+                },
+                {
+                    "_id": "67e3fa5d227ee2a663cb1a73",
+                    "username": "auisydf",
+                    "email": "asd@asd.zxc"
+                }
+            ],
+            "groupName": "dfghjk"
+        },
+        {
+            "lastMessage": {
+                "senderUserId": "67fb79eafbe038d9ab3a7ac2",
+                "msgBody": "Hello from Postman",
+                "time": "2025-04-15T18:37:28.689Z"
+            },
+            "_id": "67fea6a573d60c572225c219",
+            "group": [
+                {
+                    "_id": "67fb79eafbe038d9ab3a7ac2",
+                    "username": "hello12",
+                    "email": "hellohi@gmail.com"
+                },
+                {
+                    "_id": "67e3fa5d227ee2a663cb1a73",
+                    "username": "auisydf",
+                    "email": "asd@asd.zxc"
+                }
+            ],
+            "groupName": "Test Chat Group"
+        }
+    ]
+}
+
+get http://localhost:5000/api/users/getUserChats/67e3fa5d227ee2a663cb1a73
+res:
+{
+    "chatList": [
+        {
+            "chatId": "67fe07c7ce06e4a07d12f5fe",
+            "groupName": "dfghjk",
+            "lastMessage": {
+                "time": "2025-04-15T18:42:44.183Z"
+            }
+        },
+        {
+            "chatId": "67fe0837ce06e4a07d12f609",
+            "groupName": "dfghjk",
+            "lastMessage": {
+                "time": "2025-04-15T18:42:44.183Z"
+            }
+        },
+        {
+            "chatId": "67fe0841ce06e4a07d12f610",
+            "groupName": "dfghjk",
+            "lastMessage": {
+                "time": "2025-04-15T18:42:44.183Z"
+            }
+        },
+        {
+            "chatId": "67fea6a573d60c572225c219",
+            "groupName": "Test Chat Group",
+            "lastMessage": {
+                "senderUserId": "67fb79eafbe038d9ab3a7ac2",
+                "msgBody": "Hello from Postman",
+                "time": "2025-04-15T18:37:28.689Z"
+            }
+        }
+    ]
+}
